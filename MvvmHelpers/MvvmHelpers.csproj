@@ -1,7 +1,7 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/2.0.54">
 
 	<PropertyGroup>
-		<TargetFrameworks>net461;netstandard1.0;netstandard2.0</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
 		<Product>$(AssemblyName) ($(TargetFramework))</Product>
 		<AssemblyVersion>1.0.0.0</AssemblyVersion>
 		<AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
@@ -10,7 +10,7 @@
 		<Authors>James Montemagno</Authors>
 		<PackageId>Refractored.MvvmHelpers</PackageId>
 		<PackOnBuild>true</PackOnBuild>
-		<PackageIcon>Icon.png</PackageIcon>
+		<PackageIcon></PackageIcon>
 		<NeutralLanguage>en</NeutralLanguage>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Owners>James Montemagno</Owners>
@@ -23,7 +23,7 @@
 		<RepositoryUrl>https://github.com/jamesmontemagno/mvvm-helpers</RepositoryUrl>
 		<PackageReleaseNotes>See: https://github.com/jamesmontemagno/mvvm-helpers/blob/master/CHANGELOG.md </PackageReleaseNotes>
 
-		<LangVersion>8.0</LangVersion>
+		<LangVersion>9.0</LangVersion>
 
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -48,11 +48,9 @@
 		<!-- sourcelink: Include PDB in the built .nupkg -->
 		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
 	</PropertyGroup>
-	
+
 	<ItemGroup>
-		<None Include="Images\Icon.png" Pack="true" PackagePath="\"/>
-		
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-		<PackageReference Include="System.ValueTuple" Version="4.5.0" />
+
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
 	</ItemGroup>
 </Project>

@@ -24,53 +24,6 @@ namespace MvvmHelpers.UnitTests
 		}
 
 		[TestMethod]
-		public void SubTitle()
-		{
-			PropertyChangedEventArgs updated = null;
-			var vm = new PersonViewModel();
-
-			vm.PropertyChanged += (sender, args) =>
-			{
-				updated = args;
-			};
-
-			vm.Subtitle = "Hello";
-			Assert.IsNotNull(updated, "Property changed didn't raise");
-			Assert.AreEqual(updated.PropertyName, nameof(vm.Subtitle), "Correct Property name didn't get raised");
-		}
-		[TestMethod]
-		public void CanLoadMore()
-		{
-			PropertyChangedEventArgs updated = null;
-			var vm = new PersonViewModel();
-
-			vm.PropertyChanged += (sender, args) =>
-			{
-				updated = args;
-			};
-
-			vm.CanLoadMore = false;
-			Assert.IsNotNull(updated, "Property changed didn't raise");
-			Assert.AreEqual(updated.PropertyName, nameof(vm.CanLoadMore), "Correct Property name didn't get raised");
-		}
-
-		[TestMethod]
-		public void Icon()
-		{
-			PropertyChangedEventArgs updated = null;
-			var vm = new PersonViewModel();
-
-			vm.PropertyChanged += (sender, args) =>
-			{
-				updated = args;
-			};
-
-			vm.Icon = "Hello";
-			Assert.IsNotNull(updated, "Property changed didn't raise");
-			Assert.AreEqual(updated.PropertyName, nameof(vm.Icon), "Correct Property name didn't get raised");
-		}
-
-		[TestMethod]
 		public void IsBusy()
 		{
 			PropertyChangedEventArgs updated = null;

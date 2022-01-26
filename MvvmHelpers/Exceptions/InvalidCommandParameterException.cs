@@ -47,10 +47,10 @@ namespace MvvmHelpers.Exceptions
 
 		}
 
-		static string CreateErrorMessage(Type expectedType, Type actualType) =>
+		private static string CreateErrorMessage(Type expectedType, Type actualType) =>
 			$"Invalid type for parameter. Expected Type: {expectedType}, but received Type: {actualType}";
 
-		static string CreateErrorMessage(Type expectedType) =>
+        private static string CreateErrorMessage(Type expectedType) =>
 			$"Invalid type for parameter. Expected Type {expectedType}";
 	}
 }

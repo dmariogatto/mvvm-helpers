@@ -6,7 +6,7 @@ namespace MvvmHelpers.UnitTests
 {
 	[TestClass]
 	public class ObservableRangeTests
-	{		
+	{
 		[TestMethod]
 		public void AddRange()
 		{
@@ -73,34 +73,34 @@ namespace MvvmHelpers.UnitTests
 			};
 			collection.ReplaceRange(toAdd);
 		}
-		
+
 		[TestMethod]
 		public void ReplaceRange_on_non_empty_collection_should_always_raise_collection_changes()
 		{
 			var collection = new ObservableRangeCollection<int>(new [] { 1 });
 			var toAdd = new int[0];
 			var eventRaised = false;
-						
+
 			collection.CollectionChanged += (s, e) =>
 			{
 				eventRaised = true;
 			};
-			
+
 			collection.ReplaceRange(toAdd);
 			Assert.IsTrue(eventRaised, "Collection Reset should be raised.");
 		}
-		
+
 		[TestMethod]
 		public void ReplaceRange_on_empty_collection_should_NOT_raise_collection_changes_when_empty()
 		{
 			var collection = new ObservableRangeCollection<int>();
 			var toAdd = new int[0];
-						
+
 			collection.CollectionChanged += (s, e) =>
 			{
 				Assert.Fail("Collection changes should NOT be raised.");
 			};
-			
+
 			collection.ReplaceRange(toAdd);
 		}
 
@@ -126,7 +126,7 @@ namespace MvvmHelpers.UnitTests
 			{
 				if (e.Action != System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
 					Assert.Fail("RemoveRange didn't use Remove like requested.");
-				if (e.OldItems == null)
+				if (e.OldItems is null)
 					Assert.Fail("OldItems should not be null.");
 				var expected = new int[] { 1, 1, 2, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9, 9 };
 				if (expected.Length != e.OldItems.Count)
@@ -158,7 +158,7 @@ namespace MvvmHelpers.UnitTests
 		[TestMethod]
 		public void RemoveRange_should_NOT_mutate_source_when_source_data_is_not_present()
 		{
-			var sourceData = new List<int>(new[] { 1, 2, 3 }); 
+			var sourceData = new List<int>(new[] { 1, 2, 3 });
 			var collection = new ObservableRangeCollection<int>(new[] { 4, 5, 6 });
 
 			collection.RemoveRange(sourceData, NotifyCollectionChangedAction.Remove);

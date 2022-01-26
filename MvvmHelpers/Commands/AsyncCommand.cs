@@ -1,4 +1,5 @@
-﻿using MvvmHelpers.Interfaces;
+﻿using MvvmHelpers.Extensions;
+using MvvmHelpers.Interfaces;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -14,11 +15,11 @@ namespace MvvmHelpers.Commands
 	/// </summary>
 	public class AsyncCommand : IAsyncCommand
 	{
-		readonly Func<Task> execute;
-		readonly Func<object, bool>? canExecute;
-		readonly Action<Exception>? onException;
-		readonly bool continueOnCapturedContext;
-		readonly WeakEventManager weakEventManager = new WeakEventManager();
+		private readonly Func<Task> _execute;
+        private readonly Func<object, bool>? _canExecute;
+        private readonly Action<Exception>? _onException;
+        private readonly bool _continueOnCapturedContext;
+        private readonly WeakEventManager _weakEventManager = new WeakEventManager();
 
 		/// <summary>
 		/// Create a new AsyncCommand
@@ -32,10 +33,10 @@ namespace MvvmHelpers.Commands
 							Action<Exception>? onException = null,
 							bool continueOnCapturedContext = false)
 		{
-			this.execute = execute ?? throw new ArgumentNullException(nameof(execute));
-			this.canExecute = canExecute;
-			this.onException = onException;
-			this.continueOnCapturedContext = continueOnCapturedContext;
+			this._execute = execute ?? throw new ArgumentNullException(nameof(execute));
+			this._canExecute = canExecute;
+			this._onException = onException;
+			this._continueOnCapturedContext = continueOnCapturedContext;
 		}
 
 		/// <summary>
@@ -43,8 +44,8 @@ namespace MvvmHelpers.Commands
 		/// </summary>
 		public event EventHandler CanExecuteChanged
 		{
-			add { weakEventManager.AddEventHandler(value); }
-			remove { weakEventManager.RemoveEventHandler(value); }
+			add => _weakEventManager.AddEventHandler(value);
+			remove => _weakEventManager.RemoveEventHandler(value);
 		}
 
 		/// <summary>
@@ -52,21 +53,21 @@ namespace MvvmHelpers.Commands
 		/// </summary>
 		/// <param name="parameter">Parameter to pass to CanExecute.</param>
 		/// <returns>If it can be executed.</returns>
-		public bool CanExecute(object parameter) => canExecute?.Invoke(parameter) ?? true;
+		public bool CanExecute(object parameter) => _canExecute?.Invoke(parameter) ?? true;
 
 		/// <summary>
 		/// Execute the command async.
 		/// </summary>
 		/// <returns>Task of action being executed that can be awaited.</returns>
-		public Task ExecuteAsync() => execute();
+		public Task ExecuteAsync() => _execute();
 
 		/// <summary>
 		/// Raise a CanExecute change event.
 		/// </summary>
-		public void RaiseCanExecuteChanged() => weakEventManager.HandleEvent(this, EventArgs.Empty, nameof(CanExecuteChanged));
+		public void RaiseCanExecuteChanged() => _weakEventManager.HandleEvent(this, EventArgs.Empty, nameof(CanExecuteChanged));
 
 		#region Explicit implementations
-		void ICommand.Execute(object parameter) => ExecuteAsync().SafeFireAndForget(onException, continueOnCapturedContext);
+		void ICommand.Execute(object parameter) => ExecuteAsync().SafeFireAndForget(_onException, _continueOnCapturedContext);
 		#endregion
 	}
 	/// <summary>
@@ -75,11 +76,11 @@ namespace MvvmHelpers.Commands
 	public class AsyncCommand<T> : IAsyncCommand<T>
 	{
 
-		readonly Func<T, Task> execute;
-		readonly Func<object, bool>? canExecute;
-		readonly Action<Exception>? onException;
-		readonly bool continueOnCapturedContext;
-		readonly WeakEventManager weakEventManager = new WeakEventManager();
+        private readonly Func<T, Task> _execute;
+        private readonly Func<object, bool>? _canExecute;
+        private readonly Action<Exception>? _onException;
+        private readonly bool _continueOnCapturedContext;
+		private readonly WeakEventManager _weakEventManager = new WeakEventManager();
 
 		/// <summary>
 		/// Create a new AsyncCommand
@@ -93,10 +94,10 @@ namespace MvvmHelpers.Commands
 							Action<Exception>? onException = null,
 							bool continueOnCapturedContext = false)
 		{
-			this.execute = execute ?? throw new ArgumentNullException(nameof(execute));
-			this.canExecute = canExecute;
-			this.onException = onException;
-			this.continueOnCapturedContext = continueOnCapturedContext;
+			this._execute = execute ?? throw new ArgumentNullException(nameof(execute));
+			this._canExecute = canExecute;
+			this._onException = onException;
+			this._continueOnCapturedContext = continueOnCapturedContext;
 		}
 
 		/// <summary>
@@ -104,8 +105,8 @@ namespace MvvmHelpers.Commands
 		/// </summary>
 		public event EventHandler CanExecuteChanged
 		{
-			add { weakEventManager.AddEventHandler(value); }
-			remove { weakEventManager.RemoveEventHandler(value); }
+			add => _weakEventManager.AddEventHandler(value);
+			remove => _weakEventManager.RemoveEventHandler(value);
 		}
 
 		/// <summary>
@@ -113,25 +114,24 @@ namespace MvvmHelpers.Commands
 		/// </summary>
 		/// <param name="parameter">Parameter to pass to CanExecute.</param>
 		/// <returns>If it can be executed</returns>
-		public bool CanExecute(object parameter) => canExecute?.Invoke(parameter) ?? true;
+		public bool CanExecute(object parameter) => _canExecute?.Invoke(parameter) ?? true;
 
 		/// <summary>
 		/// Execute the command async.
 		/// </summary>
 		/// <returns>Task that is executing and can be awaited.</returns>
-		public Task ExecuteAsync(T parameter) => execute(parameter);
+		public Task ExecuteAsync(T parameter) => _execute(parameter);
 
 		/// <summary>
 		/// Raise a CanExecute change event.
 		/// </summary>
-		public void RaiseCanExecuteChanged() => weakEventManager.HandleEvent(this, EventArgs.Empty, nameof(CanExecuteChanged));
+		public void RaiseCanExecuteChanged() => _weakEventManager.HandleEvent(this, EventArgs.Empty, nameof(CanExecuteChanged));
 
 		#region Explicit implementations
-
 		void ICommand.Execute(object parameter)
 		{
-			if (CommandUtils.IsValidCommandParameter<T>(parameter))
-				ExecuteAsync((T)parameter).SafeFireAndForget(onException, continueOnCapturedContext);
+			if (Command.IsValidCommandParameter<T>(parameter))
+				ExecuteAsync((T)parameter).SafeFireAndForget(_onException, _continueOnCapturedContext);
 
 		}
 		#endregion

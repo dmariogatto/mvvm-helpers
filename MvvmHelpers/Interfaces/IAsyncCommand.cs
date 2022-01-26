@@ -39,5 +39,4 @@ namespace MvvmHelpers.Interfaces
 		/// </summary>
 		void RaiseCanExecuteChanged();
 	}
-
 }
